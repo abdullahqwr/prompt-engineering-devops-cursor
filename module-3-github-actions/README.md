@@ -35,6 +35,12 @@ You have an existing GitHub Actions workflow and need to understand and optimize
    - "How can we add security scanning and vulnerability checks?"
    - "What would you change for a production deployment pipeline?"
 
+Sample output (ASK analysis snippet):
+
+```
+Analysis: Add npm cache, Docker layer cache, and test matrix for Node versions; include dependency and container scanning steps.
+```
+
 ## Exercise 2: Using Plan Mode for CI/CD Pipeline Design
 
 ### Scenario
@@ -55,6 +61,12 @@ Plan a complete CI/CD pipeline for a Node.js application with multiple environme
    - "Add performance testing and load testing stages"
    - "Include automated database migrations"
    - "Add notification systems for deployment status"
+
+Sample output (Plan mode snippet):
+
+```
+Plan: CI with lint/test, security scan job, build/push job, CD with staging then manual approval for prod, integration tests in staging.
+```
 
 ## Exercise 3: Using Agent Mode for Complete Pipeline Generation
 
@@ -96,6 +108,11 @@ Generate a complete, production-ready GitHub Actions workflow.
    ```
 
 2. **Create additional workflows**:
+Sample output (Agent mode snippet):
+
+```
+Generated workflows: ci-cd-pipeline.yml, security-scanning.yml, dependency-updates.yml
+```
    ```
    Create a separate workflow for dependency updates with:
    - Dependabot integration
@@ -166,3 +183,64 @@ After completing the exercises, you should have:
 ## Next Steps
 
 After completing GitHub Actions workflow generation, proceed to [Module 4: Git and GitHub Workflows](../module-4-git-workflows/README.md).
+
+## Actions performed (files added)
+
+I generated additional workflows and helper scripts to demonstrate the features described in this module. Files added:
+
+- `workflows/security-scanning.yml` — container and dependency scanning jobs
+- `workflows/dependency-updates.yml` — scheduled/dispatch job to create dependency update PRs
+- `scripts/deploy.sh` — placeholder deploy script
+- `scripts/rollback.sh` — placeholder rollback script
+- `scripts/health-check.sh` — simple health check script
+
+How to test locally / in a repo:
+
+1. Copy the workflow files to `.github/workflows/` in a test repository.
+2. Ensure required secrets are configured (container registry, slack webhook, deployment names).
+3. Push to a feature branch or open a PR to trigger workflows.
+
+Expected outputs:
+
+- CI jobs (lint-and-test) should run and report pass/fail based on test suite results.
+- Security scanning job will upload `npm-audit.json` as an artifact and run Trivy scans.
+- Dependency updates workflow will create a PR when scheduled or dispatched.
+
+Notes:
+
+- The scripts under `scripts/` are placeholders. Replace the echo lines with your real deployment/rollback commands (az, kubectl, etc.).
+- To simulate container scans locally, run Trivy on built images: `trivy image <image>`.
+
+Sample output (npm ci):
+
+```
+added 120 packages, and audited 120 packages in 2s
+3 packages are looking for funding
+found 0 vulnerabilities
+```
+
+Sample output (npm test -- --coverage --ci):
+
+```
+PASS  src/app.test.js
+Coverage: 85% (threshold 80%)
+Test Suites: 1 passed, 1 total
+Tests:       5 passed, 5 total
+```
+
+Sample output (Trivy fs scan):
+
+```
+2025-10-22T12:00:00.000Z INFO Detected OS: alpine
++------------------+------------------+----------+
+| LIBRARY          | VULNERABILITY ID | SEVERITY |
+| musl             | CVE-2023-xxxx    | HIGH     |
+------------------+------------------+----------+
+```
+
+Sample output (CI job success):
+
+```
+Run complete — all checks passed
+```
+

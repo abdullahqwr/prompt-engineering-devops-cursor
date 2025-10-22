@@ -35,6 +35,12 @@ You need to understand and improve existing Git workflows and team collaboration
    - "How can we improve the pull request review process?"
    - "What automation can be added to reduce manual work?"
 
+Sample output (ASK analysis snippet):
+
+```
+Analysis: Use GitFlow with protected main and develop; require 2 reviewers; enable auto-labeling and dependabot.
+```
+
 ## Exercise 2: Using Plan Mode for Workflow Design
 
 ### Scenario
@@ -56,6 +62,12 @@ Plan a comprehensive Git and GitHub workflow for a DevOps team.
    - "Add semantic versioning for infrastructure releases"
    - "Include automated dependency updates"
    - "Plan for hotfix and emergency deployment workflows"
+
+Sample output (Plan mode snippet):
+
+```
+Plan: Branch rules, PR templates, semantic-release pipeline, Dependabot with auto PRs and required CI checks.
+```
 
 ## Exercise 3: Using Agent Mode for Complete Workflow Implementation
 
@@ -97,6 +109,11 @@ Generate a complete Git workflow setup with all necessary configurations and aut
    ```
 
 2. **Create additional configurations**:
+Sample output (Agent mode snippet):
+
+```
+Generated files: .github/PULL_REQUEST_TEMPLATE, .github/ISSUE_TEMPLATE, .github/CODEOWNERS, dependabot.yml
+```
    ```
    Create GitHub-specific configurations for:
    - Issue templates for bugs, features, and infrastructure changes
@@ -190,3 +207,47 @@ After completing the exercises, you should have:
 ## Next Steps
 
 After completing Git workflow configuration, proceed to [Module 5: Advanced DevOps Topics](../module-5-advanced/README.md).
+
+## Actions performed (files added)
+
+I added GitHub configuration templates, dependabot configuration, CODEOWNERS, and helper scripts to implement the workflows described in this module.
+
+Files added:
+
+- `.github/PULL_REQUEST_TEMPLATE/feature.md` — PR template for feature changes
+- `.github/ISSUE_TEMPLATE/bug.md` — Issue template for bugs
+- `.github/ISSUE_TEMPLATE/feature_request.md` — Issue template for feature requests
+- `.github/CODEOWNERS` — code ownership configuration
+- `dependabot.yml` — Dependabot configuration
+- `scripts/git-setup.sh` — helper to initialize repo (placeholder)
+- `scripts/branch-cleanup.sh` — local branch cleanup script
+- `scripts/release-helper.sh` — release scaffolding helper (placeholder)
+
+How to test / use:
+
+1. Copy `.github/` to the repository root in a test repo to enable templates and CODEOWNERS.
+2. Enable Dependabot in repository settings (it may be enabled by default).
+3. Run `scripts/branch-cleanup.sh` in a local clone to remove merged branches.
+
+Expected outcomes:
+
+- New issues and PRs will use the provided templates.
+- Dependabot will open weekly pull requests for npm dependency updates.
+- CODEOWNERS will auto-assign reviewers based on touched paths.
+
+Sample output (scripts/branch-cleanup.sh):
+
+```
+Fetching origin...
+Deleted branch feature/old-work
+Deleted branch bugfix/fix-typo
+Cleanup complete
+```
+
+Sample output (Dependabot PR created):
+
+```
+Dependabot found 3 dependencies to update
+Created PR #42: chore(deps): update dependencies
+```
+

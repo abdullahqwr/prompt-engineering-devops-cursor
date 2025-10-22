@@ -35,6 +35,12 @@ You need to understand and optimize existing Terraform configurations.
    - "How can we optimize costs in this infrastructure setup?"
    - "What monitoring and alerting should be added?"
 
+Sample output (ASK analysis snippet):
+
+```
+Analysis: Ensure Contributor+ access for deployment user; recommend Log Analytics and Cost Management tags; add alerts for CPU and failed auth attempts.
+```
+
 ## Exercise 2: Using Plan Mode for Infrastructure Planning
 
 ### Scenario
@@ -58,6 +64,12 @@ Plan a complete Azure infrastructure for a multi-tier web application.
    - "Include tags for cost management and compliance"
    - "Plan for disaster recovery with backup configurations"
 
+Sample output (Plan mode snippet):
+
+```
+Plan: resource group, vnet with two subnets, nsgs, key vault, outputs for RG and VNet IDs, validation rules for variables.
+```
+
 ## Exercise 3: Using Agent Mode for Complete Infrastructure Generation
 
 ### Scenario
@@ -66,6 +78,11 @@ Generate a complete, production-ready Terraform configuration for Azure infrastr
 ### Steps
 
 1. **Use this comprehensive prompt**:
+Sample output (Agent mode snippet):
+
+```
+Generated files: main.tf, variables.tf, outputs.tf, versions.tf, modules/networking, modules/security
+```
    ```
    Create a complete Terraform configuration for Azure cloud infrastructure with the following requirements:
    
@@ -141,6 +158,33 @@ After completing the exercises, you should have:
    terraform plan
    ```
 
+Sample output (terraform init):
+
+```
+Initializing the backend...
+Initializing provider plugins...
+- Finding hashicorp/azurerm versions matching "~> 3.0"
+- Installing hashicorp/azurerm v3.x.x...
+...
+Terraform has been successfully initialized!
+```
+
+Sample output (terraform validate):
+
+```
+Success! The configuration is valid.
+```
+
+Sample output (terraform plan --out=tfplan):
+
+```
+An execution plan has been generated and is shown below.
+Resource actions are indicated with the following symbols:
+   + create
+
+Plan: 10 to add, 0 to change, 0 to destroy.
+```
+
 ## Best Practices Demonstrated
 
 - **Security**: Network security groups, private endpoints, RBAC
@@ -152,3 +196,48 @@ After completing the exercises, you should have:
 ## Next Steps
 
 After completing Terraform configuration generation, proceed to [Module 3: CI/CD with GitHub Actions](../module-3-github-actions/README.md).
+
+## Actions performed (updates and verification notes)
+
+I inspected the example Terraform configuration files under `examples/` and attempted to initialize Terraform in this environment to validate syntax and providers.
+
+- Files reviewed: `main.tf`, `variables.tf`, `outputs.tf`, `terraform.tfvars.example`.
+- Attempted command:
+
+```powershell
+cd module-2-terraform/examples;
+terraform init
+terraform validate
+```
+
+- Result in this environment: `terraform` CLI is not installed (CommandNotFound). I could not run `terraform init` or `terraform validate` here.
+
+How you can run these locally:
+
+1. Install Terraform (1.5+): https://learn.hashicorp.com/tutorials/terraform/install-cli
+2. Authenticate with Azure CLI (if planning to apply):
+
+```powershell
+az login
+az account set --subscription "<your-subscription-id>"
+```
+
+3. Initialize and validate:
+
+```powershell
+cd module-2-terraform/examples;
+terraform init
+terraform validate
+terraform plan -out=tfplan
+```
+
+Expected outputs:
+
+- `terraform init` should download the `azurerm` provider and initialize the working directory.
+- `terraform validate` should report `Success! The configuration is valid.` if no issues.
+- `terraform plan` will produce an execution plan or indicate missing credentials if not authenticated with Azure.
+
+Notes:
+- The example config references `random_string` and `data.azurerm_client_config` which require provider initialization and appropriate permissions. When running `terraform plan`, ensure `az login` has been performed and the account has sufficient RBAC permissions.
+- If you'd like, I can create a small script `verify.sh` or a PowerShell script to automate these checks on your machine.
+

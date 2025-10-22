@@ -27,6 +27,12 @@ This module covers advanced DevOps scenarios where prompt engineering with Curso
 Analyze this Kubernetes deployment manifest. What improvements can be made for production readiness, security, and observability?
 ```
 
+Sample output (ASK analysis snippet):
+
+```
+Analysis: Add resource limits, readiness/liveness probes, non-root user, RBAC rules, and Prometheus annotations for metrics scraping.
+```
+
 **Plan Mode Prompt**:
 ```
 Plan a Kubernetes deployment for a Node.js microservices application with:
@@ -39,6 +45,12 @@ Plan a Kubernetes deployment for a Node.js microservices application with:
 - Resource quotas and limits
 - Health checks and probes
 - Monitoring and logging integration
+```
+
+Sample output (Plan mode snippet):
+
+```
+Plan: frontend + backend + db + redis, ingress with TLS, resource quotas, HPA for backend, Prometheus & Grafana for monitoring.
 ```
 
 **Agent Mode Prompt**:
@@ -72,6 +84,12 @@ Security:
 - RBAC configuration
 
 Include Helm chart structure with values.yaml for different environments.
+```
+
+Sample output (Agent mode snippet):
+
+```
+Generated artifacts: kubernetes manifests, helm chart skeleton, prometheus configs, ansible playbooks, and IaC scanning notes.
 ```
 
 ### 5.2 Infrastructure Monitoring and Observability
@@ -284,3 +302,87 @@ The key to success with advanced DevOps prompting is:
 - Being specific about requirements
 - Iterating and refining based on results
 - Integrating security, monitoring, and best practices from the start
+
+## Actions performed (files added)
+
+I added example Kubernetes manifests, a Helm chart skeleton, Prometheus configuration, Ansible playbook scaffold, and an IaC scanning note to help you test the advanced scenarios.
+
+Files added:
+
+- `kubernetes/manifests/deployment-api.yaml` — example Deployment
+- `kubernetes/manifests/service-api.yaml` — example Service
+- `kubernetes/helm-charts/devops-demo/Chart.yaml` — Helm chart metadata
+- `kubernetes/helm-charts/devops-demo/values.yaml` — Helm chart values
+- `monitoring/prometheus/prometheus.yml` — simple Prometheus scrape config
+- `automation/ansible/playbook.yml` — Ansible playbook scaffold
+- `security/scanning/iac-scan.md` — instructions for scanning IaC
+
+How to test locally:
+
+Kubernetes manifests:
+
+```powershell
+kubectl apply -f module-5-advanced/kubernetes/manifests/deployment-api.yaml
+kubectl apply -f module-5-advanced/kubernetes/manifests/service-api.yaml
+kubectl get pods -n devops-demo
+```
+
+Sample output (kubectl apply):
+
+```
+deployment.apps/api-deployment created
+service/api-service created
+```
+
+Sample output (kubectl get pods -n devops-demo):
+
+```
+NAME                                READY   STATUS    RESTARTS   AGE
+api-deployment-5f7c9d8d6f-abc12     1/1     Running   0          30s
+api-deployment-5f7c9d8d6f-def34     1/1     Running   0          30s
+```
+
+Helm chart:
+
+```powershell
+helm lint module-5-advanced/kubernetes/helm-charts/devops-demo
+helm template my-release module-5-advanced/kubernetes/helm-charts/devops-demo
+```
+
+Sample output (helm template):
+
+```
+# Source: devops-demo/templates/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: my-release-devops-demo
+...
+```
+
+Prometheus:
+
+Place `prometheus.yml` into your Prometheus config and restart the server; confirm the `kubernetes-pods` job appears in the UI.
+
+Ansible:
+
+```powershell
+ansible-playbook -i inventory.ini module-5-advanced/automation/ansible/playbook.yml --check
+```
+
+Sample output (ansible-playbook --check):
+
+```
+PLAY [all] *********************************************************************
+TASK [Gathering Facts] *********************************************************
+ok: [server1]
+TASK [deploy app] *************************************************************
+changed: [server1]
+
+PLAY RECAP *********************************************************************
+server1                   : ok=5    changed=2    unreachable=0    failed=0
+```
+
+IaC Scanning:
+
+Run `tfsec .` or `checkov -d .` in your Terraform directories to scan for security issues.

@@ -1,0 +1,8 @@
+# Code owners for repository
+# Format: <pattern> <team-or-user>
+/docs/ @devops-team
+/module-1-dockerfile/ @devops-team
+/module-2-terraform/ @devops-team
+/module-3-github-actions/ @devops-team
+/module-4-git-workflows/ @devops-team
+/module-5-advanced/ @devops-team
